@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دعوة زفاف متميزة — أفراح آل الخزندار</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #090514; /* عمق الليل المخملي */
+            --glass-core: rgba(255, 255, 255, 0.04);
+            --glass-stroke: rgba(255, 255, 255, 0.08);
+            --neon-gold: #f1d279; /* ذهب نيون ساطع */
+            --neon-glow: rgba(241, 210, 121, 0.35);
+            --text-main: #f5f2fa;
+            --text-sub: #a89cb5;
+            --purple-gradient: linear-gradient(135deg, #2c163f 0%, #090514 100%);
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0; padding: 0; overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 50% -20%, #3e1f5c 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, #170d24 0%, var(--bg-dark) 60%);
+            background-attachment: fixed;
+        }
+
+        /* ================= شاشة دخول مذهلة بهالة ضوئية وزر نيون منساب ================= */
+        #welcome-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--purple-gradient);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 1000;
+            transition: all 0.9s cubic-bezier(0.77, 0, 0.175, 1);
+            text-align: center; padding: 20px; box-sizing: border-box;
+        }
+
+        .welcome-aura {
+            position: relative; padding: 40px; margin-bottom: 30px;
+            animation: floating 4s ease-in-out infinite;
+        }
+        .welcome-aura::before {
+            content: ''; position: absolute; inset: 0; border-radius: 50%;
+            background: radial-gradient(circle, var(--neon-glow) 0%, transparent 70%);
+            filter: blur(20px); opacity: 0.6; z-index: -1;
+        }
+
+        .welcome-title {
+            font-family: 'Amiri', serif; font-size: 3.8rem; font-weight: 800;
+            color: #fff; margin: 0 0 10px 0; line-height: 1.3;
+            text-shadow: 0 0 20px var(--neon-glow), 0 10px 30px rgba(0,0,0,0.6);
+        }
+
+        .welcome-subtitle {
+            font-size: 1.15rem; color: var(--text-sub); font-weight: 300; letter-spacing: 3px;
+        }
+
+        /* تصميم زر النيون السائل التفاعلي الجذاب */
+        .cyber-neon-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid var(--glass-stroke);
+            padding: 18px 50px; font-size: 1.2rem; font-weight: 600; color: #fff;
+            border-radius: 16px; cursor: pointer; position: relative; overflow: hidden;
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.1);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .cyber-neon-btn::before {
+            content: ''; position: absolute; top: 50%; left: 50%; width: 150%; height: 150%;
+            background: radial-gradient(circle, var(--neon-gold) 0%, transparent 60%);
+            transform: translate(-50%, -50%) scale(0); opacity: 0; transition: all 0.6s ease;
+            mix-blend-mode: overlay;
+        }
+
+        .cyber-neon-btn:hover {
+            border-color: var(--neon-gold);
+            color: var(--bg-dark);
+            background: var(--neon-gold);
+            box-shadow: 0 0 40px var(--neon-glow), 0 10px 20px rgba(0,0,0,0.3);
+            transform: translateY(-5px) scale(1.03);
+            font-weight: 800;
+        }
+
+        .cyber-neon-btn:hover::before { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        .cyber-neon-btn:active { transform: translateY(-1px) scale(1); }
+
+        /* ================= زر الصوت الهولوغرامي العائم والموجات المتحركة ================= */
+        #hologram-audio-container {
+            position: fixed; bottom: 30px; left: 30px; z-index: 999;
+            display: none; align-items: center; gap: 12px;
+            background: rgba(15, 10, 24, 0.6); padding: 8px 16px;
+            border-radius: 40px; border: 1px solid var(--glass-stroke);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .audio-waves { display: flex; align-items: flex-end; gap: 3px; height: 18px; width: 20px; }
+        .audio-waves span { width: 3px; background-color: var(--neon-gold); border-radius: 2px; animation: bounceWaves 1.2s ease infinite alternate; }
+        .audio-waves span:nth-child(2) { animation-delay: 0.3s; height: 70%; }
+        .audio-waves span:nth-child(3) { animation-delay: 0.6s; height: 40%; }
+        
+        .audio-waves.paused span { animation: none !important; height: 3px !important; background-color: var(--text-sub); }
+
+        .hologram-btn {
+            background: transparent; border: none; color: var(--text-main);
+            font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: 'Cairo', sans-serif;
+        }
+
+        /* ================= التصميم العام المبتكر وتوزيع العناصر ================= */
+        .main-container { max-width: 540px; width: 92%; margin: 50px auto; display: none; opacity: 0; transition: opacity 1.2s ease; }
+        
+        /* كروت سائلة شفافة ذات انحناء ناعم وعصري */
+        .liquid-card {
+            background: var(--glass-core);
+            border: 1px solid var(--glass-stroke);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 40px 30px; margin-bottom: 35px; border-radius: 32px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            position: relative; transition: border-color 0.4s;
+        }
+        .liquid-card:hover { border-color: rgba(241, 210, 121, 0.25); }
+
+        .poetry-aesthetic {
+            font-family: 'Amiri', serif; font-size: 1.65rem; line-height: 1.9; color: var(--text-main);
+            text-align: center; margin-bottom: 35px; position: relative;
+        }
+        .poetry-aesthetic::after {
+            content: '✦ ✦ ✦'; display: block; font-size: 0.9rem; color: var(--neon-gold); margin-top: 15px; opacity: 0.6;
+        }
+
+        .names-glow-title {
+            font-family: 'Amiri', serif; font-size: 3rem; font-weight: 700; text-align: center;
+            background: linear-gradient(180deg, #fff 0%, #e2d7f5 100%);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            margin: 20px 0; text-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .names-glow-title span { font-family: 'Cinzel', sans-serif; font-size: 1.8rem; color: var(--neon-gold); margin: 0 8px; }
+
+        /* ================= العداد التنازلي المنحني والمدمج بشكل مبتكر ================= */
+        .innovative-countdown {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+            margin: 30px 0 10px 0; background: rgba(255, 255, 255, 0.02);
+            padding: 15px 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03);
+        }
+        .time-cell { text-align: center; }
+        .time-val { font-family: 'Cinzel', sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--neon-gold); display: block; text-shadow: 0 0 10px var(--neon-glow); }
+        .time-tag { font-size: 0.75rem; color: var(--text-sub); margin-top: 5px; font-weight: 400; }
+
+        /* ================= ألبوم استعراض الصور السائل ================= */
+        .album-viewport {
+            position: relative; width: 100%; height: 360px; overflow: hidden;
+            border-radius: 24px; border: 1px solid var(--glass-stroke);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .album-track { display: flex; width: 100%; height: 100%; transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1); }
+        .album-track img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; }
+        
+        .nav-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(9, 5, 20, 0.7); border: 1px solid var(--glass-stroke);
+            color: #fff; width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; z-index: 10; transition: all 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        .nav-arrow:hover { background: var(--neon-gold); color: var(--bg-dark); border-color: var(--neon-gold); box-shadow: 0 0 15px var(--neon-glow); }
+        .nav-right { right: 15px; } .nav-left { left: 15px; }
+
+        /* ================= أزرار نيون داخلية متفاعلة وجذابة ================= */
+        .neon-action-btn {
+            background: rgba(241, 210, 121, 0.04);
+            color: #fff; font-size: 0.9rem; font-weight: 600;
+            border: 1px solid var(--glass-stroke); padding: 15px 30px;
+            cursor: pointer; text-decoration: none; display: block;
+            border-radius: 14px; text-align: center; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-family: 'Cairo', sans-serif; position: relative; overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .neon-action-btn:hover {
+            border-color: var(--neon-gold);
+            box-shadow: 0 0 20px var(--neon-glow);
+            color: var(--neon-gold);
+            transform: translateY(-3px);
+            background: rgba(241, 210, 121, 0.08);
+        }
+        .neon-action-btn:active { transform: translateY(-1px); }
+
+        .stack-buttons { display: flex; flex-direction: column; gap: 15px; margin-top: 25px; }
+
+        /* ================= الصناديق النصية المدخلة والتهاني ================= */
+        .cyber-input {
+            width: 100%; box-sizing: border-box; padding: 16px; border: 1px solid var(--glass-stroke);
+            background: rgba(0,0,0,0.3); font-family: 'Cairo', sans-serif; font-size: 0.85rem;
+            color: #fff; resize: none; margin-bottom: 15px; outline: none; border-radius: 14px;
+            transition: all 0.3s;
+        }
+        .cyber-input:focus { border-color: var(--neon-gold); box-shadow: 0 0 15px rgba(241, 210, 121, 0.15); }
+        
+        .wishes-scroller { text-align: right; max-height: 200px; overflow-y: auto; margin-top: 25px; padding-right: 5px; }
+        .wish-bubble { background: rgba(255,255,255,0.01); padding: 16px; border-left: 3px solid var(--neon-gold); margin-bottom: 12px; font-size: 0.88rem; border-radius: 4px 16px 16px 16px; line-height: 1.7; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        .protocol-list { text-align: right; font-size: 0.9rem; line-height: 1.9; color: var(--text-main); padding: 0; margin: 0; }
+        .protocol-list li { margin-bottom: 14px; list-style: none; position: relative; padding-right: 22px; }
+        .protocol-list li::before { content: "✦"; color: var(--neon-gold); position: absolute; right: 0; top: 0; font-size: 0.85rem; text-shadow: 0 0 8px var(--neon-glow); }
+
+        .card-caption { text-align: right; color: var(--neon-gold); font-size: 1.2rem; font-weight: 700; margin: 0 0 20px 0; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
+        .item-row { font-size: 0.92rem; color: var(--text-sub); margin: 0 0 22px 0; line-height: 1.7; text-align: right; }
+        .item-row b { color: #fff; font-weight: 600; display: block; margin-bottom: 4px; }
+
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes bounceWaves {
+            0% { height: 20%; }
+            100% { height: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="wedding-track" loop>
+        <source src="./z.m4a" type="audio/mpeg">
+    </audio>
+
+    <!-- زر وموجات الصوت الهولوغرامية العائمة الزجاجية الجذابة -->
+    <div id="hologram-audio-container">
+        <div class="audio-waves" id="waveVisual">
+            <span></span><span></span><span></span>
+        </div>
+        <button class="hologram-btn" onclick="toggleAudioStream()">الموسيقا تعمل / إيقاف 🔇</button>
+    </div>
+
+    <!-- شاشة الدخول المحدثة كلياً بالهالة المضيئة وزر النيون السائل -->
+    <div id="welcome-screen">
+        <div class="welcome-aura">
+            <h1 class="welcome-title">أفراح آل الخزندار</h1>
+            <div class="welcome-subtitle">نخبة الليالي تزدان بتشريفكم الأنيق</div>
+        </div>
+        
+        <button class="cyber-neon-btn" onclick="enterGrandInvitation()">
+            الدخول وتصفح الدعوة الرسمية ⟶
+        </button>
+    </div>
+
+    <!-- الحاوية الأساسية بالتصميم والتنسيق العام الجديد -->
+    <div class="main-container" id="invitationPayload">
+        
+        <!-- الكرت الأول: الترحيب والأسماء وموقت التنازلي مدمج انسيابياً -->
+        <div class="liquid-card">
+            <div class="poetry-aesthetic">
+                طاب اللقاء وزانت في المحافلِ بهجةٌ .. وبكم أيا أحبابنا تـمّت لنا الـنعمُ<br>
+                فـانثر هـنا عطر المحبةِ والوفا .. فـبـحـبـكـم فـرحـاتـنـا تـتـرجـمُ
+            </div>
+
+            <div class="names-glow-title">
+                محمد <span>&</span> ياسمين
+            </div>
+
+            <!-- العداد التنازلي مدمج في الكرت الرئيسي بشكل خلايا عصرية -->
+            <div class="innovative-countdown">
+                <div class="time-cell"><span class="time-val" id="day_box">00</span><span class="time-tag">أيام</span></div>
+                <div class="time-cell"><span class="time-val" id="hour_box">00</span><span class="time-tag">ساعات</span></div>
+                <div class="time-cell"><span class="time-val" id="min_box">00</span><span class="time-tag">دقائق</span></div>
+                <div class="time-cell"><span class="time-val" id="sec_box">00</span><span class="time-tag">ثواني</span></div>
+            </div>
+        </div>
+
+        <!-- الكرت الثاني: معرض الصور السائل ذو الحواف المنحنية الفاخرة -->
+        <div class="liquid-card" style="padding: 12px;">
+            <div class="album-viewport">
+                <button class="nav-arrow nav-right" onclick="shiftPhoto(-1)">&#10094;</button>
+                <div class="album-track" id="albumTrack">
+                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=600" alt="Wedding Showcase 1">
+                    <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=600" alt="Wedding Showcase 2">
+                    <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=600" alt="Wedding Showcase 3">
+                </div>
+                <button class="nav-arrow nav-left" onclick="shiftPhoto(1)">&#10095;</button>
+            </div>
+        </div>
+
+        <!-- الكرت الثالث: تفاصيل ومواعيد الاحتفالات العائلية لآل الخزندار -->
+        <div class="liquid-card">
+            <h3 class="card-caption">✦ مناهج ومواعيد أفراحنا</h3>
+            
+            <p class="item-row"><b>▪ سهرة ديوان العريس والشباب:</b>يوم الثلاثاء، 21 يوليو 2026 — أمام ديوان آل الخزندار العامر بمدينة غزة، وجلسة الأهل والأحباب.</p>
+            <p class="item-row"><b>▪ ليلة حناء العروس السعيدة:</b>يوم الأربعاء، 22 يوليو 2026 — في صالة قصر الورود بمدينة غزة.</p>
+            <p class="item-row"><b>▪ حفل الزفاف والمأدبة الملكية الكبرى:</b>يوم الخميس، 23 يوليو 2026 — بتمام الساعة 5:00 مساءً في صالة الرويال (Royal) الفخمة بمدينة غزة.</p>
+        </div>
+
+        <!-- الكرت الرابع: كرت مستقل للمواقع والوصول مع أزرار النيون الجذابة -->
+        <div class="liquid-card">
+            <h3 class="card-caption">✦ الخرائط الجغرافية ومسارات الوصول</h3>
+            <p class="item-row" style="margin-bottom: 12px;">لتسهيل حضور ضيوفنا الكرام وتجنب عناء الطرق، يمكنكم تتبع المسار المباشر:</p>
+            <div class="stack-buttons">
+                <a href="https://maps.google.com" target="_blank" class="neon-action-btn">🧭 مسار وصول الضيوف إلى صالة الرويال - غزة</a>
+                <a href="https://maps.google.com" target="_blank" class="neon-action-btn">🧭 مسار ديوان عائلة الخزندار - غزة</a>
+            </div>
+            <center style="margin-top:25px;">
+                <a href="https://calendar.google.com" target="_blank" class="neon-action-btn" style="display:inline-block; border-color: var(--neon-gold); color: var(--neon-gold);">📅 إدراج الموعد في تقويم الهاتف الذكي</a>
+            </center>
+        </div>
+
+        <!-- الكرت الخامس: بروتوكول وتنويهات الحفل الكريمة -->
+        <div class="liquid-card">
+            <h3 class="card-caption">✦ توجيهات وبروتوكول الفرح</h3>
+            <ul class="protocol-list">
+                <li>نرجو من ضيوفنا الأعزاء مراعاة التوقيت المحدد للبدء المنسق للمراسم السعيدة.</li>
+                <li>التزاماً بخصوصية الترتيبات وشروط إدارة القاعة، نعتذر بلطف عن استقبال الأطفال ("جنة الأطفال منازلهم").</li>
+                <li>تسجيل تأكيد حضوركم الإلكتروني يمنحنا شرف الترتيب المثالي لمقاعدكم الغالية.</li>
+            </ul>
+        </div>
+
+        <!-- الكرت السادس: ركن الحضور ودفتر المشاعر والتهاني التفاعلي -->
+        <div class="liquid-card">
+            <h3 class="card-caption">✦ تأكيد تشريف الحضور الرقمي</h3>
+            <button class="neon-action-btn" id="triggerRSVP" style="width: 100%; background: rgba(241, 210, 121, 0.05);">اضغط هنا لتثبيت وتأكيد حضورك الشخصي ✉</button>
+            <h4 id="thanksMessage" style="display:none; color: var(--neon-gold); margin-top: 20px; font-size: 1.05rem; text-align: center; text-shadow: 0 0 10px var(--neon-glow);">أهلاً ومرحباً بكم، تشريفكم يمنح ليلتنا السعيدة ضياءً غامراً وبشرى عظيمة! ✨</h4>
+            
+            <hr style="border:0; border-top: 1px solid var(--glass-stroke); margin:35px 0;">
+
+            <h3 class="card-caption">✦ دفتر التهاني والكلمات العطرة</h3>
+            <textarea class="cyber-input" id="wishField" rows="3" placeholder="أرسل كلمة مباركة طيبة لعائلة الخزندار وللعروسين الغاليين..."></textarea>
+            <button class="neon-action-btn" style="background: var(--neon-gold); color: var(--bg-dark); font-weight: 700;" onclick="postNewWish()">بث التهنئة الحالية</button>
+            
+            <div class="wishes-scroller" id="scrollerBox">
+                <div class="wish-bubble"><b>آل الخزندار الكرام:</b> ألف مبارك زواج الأبناء الميمون، نسأل الله رب العرش أن يجعله بيتاً مباركاً عامراً بالسكينة، والمودة، والذرية الصالحة.</div>
+            </div>
+        </div>
+
+        <p style="font-family: 'Amiri', serif; font-size: 1.6rem; font-style: italic; color: var(--neon-gold); margin: 45px 0; text-align: center; text-shadow: 0 0 8px var(--neon-glow);">
+            ودامت دياركم عامرة بالمسرات والأفراح .. آل الخزندار.
+        </p>
+    </div>
+
+    <script>
+        var liveTrack = document.getElementById('wedding-track');
+        var payloadWrapper = document.getElementById('invitationPayload');
+        var visualWave = document.getElementById('waveVisual');
+
+        function enterGrandInvitation() {
+            document.getElementById('welcome-screen').style.opacity = '0';
+            document.getElementById('welcome-screen').style.visibility = 'hidden';
+            
+            payloadWrapper.style.display = 'block';
+            
+            setTimeout(function() {
+                payloadWrapper.style.opacity = '1';
+                document.getElementById('hologram-audio-container').style.display = 'flex';
+            }, 50);
+
+            liveTrack.play().catch(function(e){ console.log("Stream play initialized smoothly"); });
+        }
+
+        function toggleAudioStream() {
+            var btnText = document.querySelector('.hologram-btn');
+            if (liveTrack.paused) {
+                liveTrack.play();
+                visualWave.classList.remove('paused');
+                btnText.innerHTML = "الموسيقا تعمل / إيقاف 🔇";
+            } else {
+                liveTrack.pause();
+                visualWave.classList.add('paused');
+                btnText.innerHTML = "الموسيقا متوقفة / تشغيل 🔊";
+            }
+        }
+
+        // ================= الألبوم التلقائي والانسيابي المتفاعل =================
+        var albumIdx = 0;
+        var trackObj = document.getElementById("albumTrack");
+        var totalPhotos = document.querySelectorAll("#albumTrack img").length;
+
+        function shiftPhoto(direction) {
+            albumIdx += direction;
+            if (albumIdx >= totalPhotos) albumIdx = 0;
+            if (albumIdx < 0) albumIdx = totalPhotos - 1;
+            trackObj.style.transform = "translateX(" + (albumIdx * 100) + "%)";
+        }
+        setInterval(function() { shiftPhoto(1); }, 5000);
+
+        document.getElementById('triggerRSVP').onclick = function() {
+            var self = this;
+            self.innerHTML = "جاري توثيق وتأكيد المقعد المخصص إلكترونياً... ✦";
+            setTimeout(function() {
+                self.style.display = 'none';
+                document.getElementById('thanksMessage').style.display = 'block';
+            }, 800);
+        };
+
+        // ================= لوحة المشاعر والتهاني =================
+        function postNewWish() {
+            var rawText = document.getElementById("wishField").value.trim();
+            if(rawText === "") return;
+            
+            var box = document.getElementById("scrollerBox");
+            var item = document.createElement("div");
+            item.classList.add("wish-bubble");
+            item.innerHTML = "<b>مُهنّئ كريم ومحب:</b> " + rawText;
+            
+            box.insertBefore(item, box.firstChild);
+            document.getElementById("wishField").value = "";
+            box.scrollTop = 0;
+        }
+
+        // العداد التنازلي التفاعلي المباشر (معدّل إلى تاريخ الفرح الحقيقي: 23 يوليو 2026)
+        var countEnd = new Date("Jul 23, 2026 17:00:00").getTime();
+        setInterval(function() {
+            var delta = countEnd - new Date().getTime();
+            
+            if (delta < 0) {
+                document.getElementById("day_box").innerHTML = "00";
+                document.getElementById("hour_box").innerHTML = "00";
+                document.getElementById("min_box").innerHTML = "00";
+                document.getElementById("sec_box").innerHTML = "00";
+                return;
+            }
+
+            var days = Math.floor(delta / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((delta % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((delta % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((delta % (1000 * 60)) / 1000);
+
+            document.getElementById("day_box").innerHTML = days < 10 ? "0" + days : days;
+            document.getElementById("hour_box").innerHTML = hours < 10 ? "0" + hours : hours;
+            document.getElementById("min_box").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("sec_box").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+        }, 1000);
+    </script>
+</body>
+</html>
